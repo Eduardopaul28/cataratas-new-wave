@@ -494,47 +494,104 @@
 
   /* RENDER */
 
-  function render(){
+function render(){
 
-    const lista =
-      document.getElementById('lista')
+  const lista =
+    document.getElementById('lista')
 
-    lista.innerHTML = ''
+  lista.innerHTML = ''
 
-    premios.forEach(cat => {
+  premios.forEach((cat,categoriaIndex) => {
 
-      const div =
-        document.createElement('div')
+    const div =
+      document.createElement('div')
 
-      div.classList.add('categoria')
+    div.classList.add('categoria')
 
-      div.innerHTML =
-        `<h2>🎯 ${cat.puntos}P</h2>`
+    div.innerHTML = `
 
-      cat.premios.forEach((premio,index) => {
+      <h2>
 
-        div.innerHTML += `
-          <div class="premio">
+        🎯
 
-            <span>${premio}</span>
+        <input
+          type="number"
+          value="${cat.puntos}"
+          onchange="editarPuntos(${categoriaIndex}, this.value)"
+          style="
+            width:120px;
+            margin-left:10px;
+            text-align:center;
+            font-size:1.3rem;
+            font-weight:bold;
+          "
+        >
 
-            <button
-              class="btn-delete"
-              onclick="eliminarPremio(${cat.puntos},${index})"
-            >
-              ❌
-            </button>
+      </h2>
 
-          </div>
-        `
+    `
 
-      })
+    cat.premios.forEach((premio,index) => {
 
-      lista.appendChild(div)
+      div.innerHTML += `
+
+        <div class="premio">
+
+          <input
+            type="text"
+            value="${premio}"
+            onchange="
+              editarPremio(
+                ${categoriaIndex},
+                ${index},
+                this.value
+              )
+            "
+            style="
+              flex:1;
+              margin-right:10px;
+            "
+          >
+
+          <button
+            class="btn-delete"
+            onclick="
+              eliminarPremio(
+                ${categoriaIndex},
+                ${index}
+              )
+            "
+          >
+            ❌
+          </button>
+
+        </div>
+
+      `
 
     })
 
-  }
+    div.innerHTML += `
+
+      <button
+        class="btn-delete"
+        style="
+          width:100%;
+          margin-top:15px;
+          background:#ff9f1a;
+        "
+        onclick="eliminarCategoria(${categoriaIndex})"
+      >
+        🗑 Eliminar categoría
+      </button>
+
+    `
+
+    lista.appendChild(div)
+
+  })
+
+}
 
   /* AÑADIR */
 
@@ -581,17 +638,65 @@
 
   /* ELIMINAR */
 
-  function eliminarPremio(puntos,index){
+  function eliminarPremio(
+  categoriaIndex,
+  premioIndex
+){
 
-    const categoria =
-      premios.find(c => c.puntos === puntos)
+  premios[categoriaIndex]
+    .premios.splice(premioIndex,1)
 
-    categoria.premios.splice(index,1)
+  render()
 
-    render()
+}
+/* EDITAR PREMIO */
 
-  }
+function editarPremio(
+  categoriaIndex,
+  premioIndex,
+  valor
+){
 
+  premios[categoriaIndex]
+    .premios[premioIndex] = valor
+
+}
+
+/* EDITAR PUNTOS */
+
+function editarPuntos(
+  categoriaIndex,
+  valor
+){
+
+  premios[categoriaIndex]
+    .puntos = parseInt(valor)
+
+  premios.sort((a,b) => a.puntos - b.puntos)
+
+  render()
+
+}
+
+/* ELIMINAR CATEGORIA */
+
+function eliminarCategoria(
+  categoriaIndex
+){
+
+  const confirmar =
+    confirm(
+      '¿Eliminar toda la categoría?'
+    )
+
+  if(!confirmar) return
+
+  premios.splice(categoriaIndex,1)
+
+  render()
+
+}
+  
   /* GUARDAR */
 
   async function guardarEnGitHub(){
