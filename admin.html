@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin - Cataratas New Wave</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+
+      font-family:'Rajdhani',sans-serif;
+
+      background:
+        radial-gradient(circle at top,
+        rgba(0,255,140,.15),
+        transparent 30%),
+
+        linear-gradient(
+          180deg,
+          #02110a 0%,
+          #041f12 35%,
+          #000000 100%
+        );
+
+      color:white;
+
+      min-height:100vh;
+
+      padding:25px;
+    }
+
+    h1,h2{
+      font-family:'Orbitron',sans-serif;
+    }
+
+    /* LOGIN */
+
+    .login-box{
+
+      width:100%;
+      max-width:420px;
+
+      margin:60px auto;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(0,0,0,.88),
+          rgba(0,25,12,.9)
+        );
+
+      border:2px solid rgba(255,215,0,.2);
+
+      border-radius:28px;
+
+      padding:35px;
+
+      box-shadow:
+        0 0 25px rgba(0,255,140,.12);
+    }
+
+    .login-box h1{
+
+      text-align:center;
+
+      color:#ffd54a;
+
+      margin-bottom:30px;
+
+      font-size:2rem;
+    }
+
+    /* PANEL */
+
+    .panel{
+
+      display:none;
+
+      max-width:1200px;
+
+      margin:auto;
+    }
+
+    .panel-top{
+
+      text-align:center;
+
+      margin-bottom:35px;
+    }
+
+    .panel-top h1{
+
+      color:#ffd54a;
+
+      font-size:2.5rem;
+
+      text-shadow:
+        0 0 10px rgba(255,213,74,.5);
+    }
+
+    .panel-top p{
+
+      margin-top:10px;
+
+      color:#ccc;
+
+      font-size:1.1rem;
+    }
+
+    /* FORMULARIO */
+
+    .formulario{
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(0,0,0,.88),
+          rgba(0,25,12,.9)
+        );
+
+      border:2px solid rgba(52,255,148,.18);
+
+      border-radius:24px;
+
+      padding:25px;
+
+      margin-bottom:30px;
+
+      box-shadow:
+        0 0 20px rgba(0,255,140,.08);
+    }
+
+    .form-grid{
+
+      display:grid;
+
+      grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+
+      gap:18px;
+    }
+
+    input{
+
+      width:100%;
+
+      padding:16px;
+
+      border:none;
+
+      border-radius:16px;
+
+      background:
+        rgba(255,255,255,.08);
+
+      color:white;
+
+      font-size:1rem;
+
+      outline:none;
+
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    input::placeholder{
+      color:#ccc;
+    }
+
+    /* BOTONES */
+
+    button{
+
+      border:none;
+
+      border-radius:16px;
+
+      padding:16px 20px;
+
+      font-size:1rem;
+
+      font-weight:700;
+
+      cursor:pointer;
+
+      transition:.25s;
+
+      font-family:'Rajdhani',sans-serif;
+    }
+
+    .btn-login,
+    .btn-add,
+    .btn-save{
+
+      background:
+        linear-gradient(
+          145deg,
+          #34ff94,
+          #12b96a
+        );
+
+      color:#02110a;
+    }
+
+    .btn-login:hover,
+    .btn-add:hover,
+    .btn-save:hover{
+
+      transform:translateY(-3px);
+
+      box-shadow:
+        0 0 18px rgba(52,255,148,.4);
+    }
+
+    .btn-delete{
+
+      background:#ff4f4f;
+
+      color:white;
+
+      padding:10px 14px;
+
+      border-radius:12px;
+    }
+
+    .btn-delete:hover{
+
+      background:#ff2d2d;
+    }
+
+    /* LISTA */
+
+    .lista{
+
+      display:grid;
+
+      grid-template-columns:
+        repeat(auto-fit,minmax(340px,1fr));
+
+      gap:22px;
+    }
+
+    .categoria{
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(0,0,0,.88),
+          rgba(0,25,12,.9)
+        );
+
+      border-radius:22px;
+
+      padding:22px;
+
+      border:2px solid rgba(255,215,0,.12);
+
+      box-shadow:
+        0 0 20px rgba(0,255,140,.08);
+    }
+
+    .categoria h2{
+
+      text-align:center;
+
+      color:#ffd54a;
+
+      margin-bottom:20px;
+
+      font-size:2rem;
+    }
+
+    .premio{
+
+      display:flex;
+
+      justify-content:space-between;
+
+      align-items:center;
+
+      gap:10px;
+
+      background:
+        rgba(255,255,255,.05);
+
+      padding:12px 14px;
+
+      border-radius:14px;
+
+      margin-bottom:10px;
+
+      border-left:4px solid #34ff94;
+    }
+
+    .acciones{
+
+      margin-top:30px;
+
+      display:flex;
+
+      justify-content:center;
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    @media(max-width:768px){
+
+      .panel-top h1{
+        font-size:2rem;
+      }
+
+      .lista{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+
+  <div id="login" class="login-box">
+
+    <h1>🎰 ADMIN NEW WAVE</h1>
+
+    <input
+      type="text"
+      id="usuario"
+      placeholder="Usuario"
+    >
+
+    <br><br>
+
+    <input
+      type="password"
+      id="clave"
+      placeholder="Contraseña"
+    >
+
+    <br><br>
+
+    <button
+      class="btn-login"
+      onclick="iniciarSesion()"
+    >
+      Entrar al panel
+    </button>
+
+  </div>
+
+  <!-- PANEL -->
+
+  <div id="panel" class="panel">
+
+    <div class="panel-top">
+
+      <h1>🎯 Panel de Premios</h1>
+
+      <p>
+        Cataratas New Wave
+      </p>
+
+    </div>
+
+    <!-- FORM -->
+
+    <div class="formulario">
+
+      <div class="form-grid">
+
+        <input
+          type="number"
+          id="puntos"
+          placeholder="Puntos"
+        >
+
+        <input
+          type="text"
+          id="nombre"
+          placeholder="Nombre del premio"
+        >
+
+        <button
+          class="btn-add"
+          onclick="agregarPremio()"
+        >
+          ➕ Añadir Premio
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- LISTA -->
+
+    <div id="lista" class="lista"></div>
+
+    <!-- GUARDAR -->
+
+    <div class="acciones">
+
+      <button
+        class="btn-save"
+        onclick="guardarEnGitHub()"
+      >
+        💾 Guardar cambios en GitHub
+      </button>
+
+    </div>
+
+  </div>
+
+<script>
+
+  /* LOGIN */
+
+  const USUARIO = "newwaveadmin"
+  const CLAVE = "Cataratas2026"
+
+  /* GITHUB */
+
+  const owner = "eduardopaul28"
+
+  const repo = "cataratas-new-wave"
+
+  const pathFile = "premios.json"
+
+  /* TU TOKEN */
+
+  const tokenBase64 = "PEGA_AQUI_TU_TOKEN_BASE64"
+
+  const tokenGitHub = atob(tokenBase64)
+
+  let premios = []
+
+  /* LOGIN */
+
+  function iniciarSesion(){
+
+    const user =
+      document.getElementById('usuario').value.trim()
+
+    const pass =
+      document.getElementById('clave').value.trim()
+
+    if(user === USUARIO && pass === CLAVE){
+
+      document.getElementById('login')
+        .style.display = 'none'
+
+      document.getElementById('panel')
+        .style.display = 'block'
+
+      cargarPremios()
+
+    }else{
+
+      alert('Usuario o contraseña incorrectos')
+
+    }
+
+  }
+
+  /* CARGAR PREMIOS */
+
+  async function cargarPremios(){
+
+    const url =
+      `https://raw.githubusercontent.com/${owner}/${repo}/main/${pathFile}`
+
+    const res = await fetch(url)
+
+    premios = await res.json()
+
+    render()
+
+  }
+
+  /* RENDER */
+
+  function render(){
+
+    const lista =
+      document.getElementById('lista')
+
+    lista.innerHTML = ''
+
+    premios.forEach(cat => {
+
+      const div =
+        document.createElement('div')
+
+      div.classList.add('categoria')
+
+      div.innerHTML =
+        `<h2>🎯 ${cat.puntos}P</h2>`
+
+      cat.premios.forEach((premio,index) => {
+
+        div.innerHTML += `
+          <div class="premio">
+
+            <span>${premio}</span>
+
+            <button
+              class="btn-delete"
+              onclick="eliminarPremio(${cat.puntos},${index})"
+            >
+              ❌
+            </button>
+
+          </div>
+        `
+
+      })
+
+      lista.appendChild(div)
+
+    })
+
+  }
+
+  /* AÑADIR */
+
+  function agregarPremio(){
+
+    const puntos =
+      parseInt(document.getElementById('puntos').value)
+
+    const nombre =
+      document.getElementById('nombre').value.trim()
+
+    if(!puntos || !nombre){
+
+      alert('Completa todos los campos')
+
+      return
+
+    }
+
+    let categoria =
+      premios.find(c => c.puntos === puntos)
+
+    if(!categoria){
+
+      categoria = {
+
+        puntos,
+        premios:[]
+      }
+
+      premios.push(categoria)
+
+      premios.sort((a,b) => a.puntos - b.puntos)
+
+    }
+
+    categoria.premios.push(nombre)
+
+    render()
+
+    document.getElementById('nombre').value = ''
+
+  }
+
+  /* ELIMINAR */
+
+  function eliminarPremio(puntos,index){
+
+    const categoria =
+      premios.find(c => c.puntos === puntos)
+
+    categoria.premios.splice(index,1)
+
+    render()
+
+  }
+
+  /* GUARDAR */
+
+  async function guardarEnGitHub(){
+
+    const url =
+      `https://api.github.com/repos/${owner}/${repo}/contents/${pathFile}`
+
+    const shaRes =
+      await fetch(url)
+
+    const shaData =
+      await shaRes.json()
+
+    const sha = shaData.sha
+
+    const contenido =
+      btoa(
+        unescape(
+          encodeURIComponent(
+            JSON.stringify(premios,null,2)
+          )
+        )
+      )
+
+    const body = {
+
+      message:
+        'Actualizar premios desde panel admin',
+
+      content: contenido,
+
+      sha: sha
+
+    }
+
+    const res = await fetch(url,{
+
+      method:'PUT',
+
+      headers:{
+        Authorization:`token ${tokenGitHub}`,
+        'Content-Type':'application/json'
+      },
+
+      body:JSON.stringify(body)
+
+    })
+
+    if(res.ok){
+
+      alert('✅ Premios actualizados correctamente')
+
+    }else{
+
+      alert('❌ Error al guardar')
+
+    }
+
+  }
+
+</script>
+
+</body>
+</html>
