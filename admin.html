@@ -745,17 +745,22 @@ function eliminarCategoria(
 
     })
 
-    if(res.ok){
+ if(res.ok){
 
-      alert('✅ Premios actualizados correctamente')
+  alert('✅ Premios actualizados correctamente')
 
-    }else{
+}else{
 
-      alert('❌ Error al guardar')
+  const errorText = await res.text()
 
-    }
+  console.log(errorText)
 
-  }
+  alert(
+    '❌ Error al guardar\\n\\n' +
+    errorText
+  )
+
+}
 
 </script>
 
