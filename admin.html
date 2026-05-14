@@ -443,9 +443,10 @@
 
   /* TU TOKEN */
 
-  const tokenBase64 = "Z2hwX3psSVBrSTlSSUh3T2h6dElqUzAxWTlUZVdTaGpvdjE0TXl3ZQ=="
+  const tokenBase64 = "Z2hwX1lvSFVUbWxpbmVQUTVPWWEwZHlmbEJDamFNSjlpSjFVWFFTWA=="
 
-  const tokenGitHub = atob(tokenBase64)
+const tokenGitHub =
+  atob(tokenBase64).replace(/\s/g, "")
 
   let premios = []
 
